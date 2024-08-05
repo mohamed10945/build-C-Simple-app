@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        cmake 'CMake'  // This should match the name you gave in Global Tool Configuration
-    }
+ //   tools {
+     //   cmake 'CMake'  // This should match the name you gave in Global Tool Configuration
+ //   }
 
     environment {
         
