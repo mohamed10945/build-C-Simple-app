@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        cmake 'CMake'  // This should match the name you gave in Global Tool Configuration
+    }
+
     environment {
         
 	BUILD_DIR = 'build'
@@ -12,11 +16,22 @@ pipeline {
                 git url: 'https://github.com/mohamed10945/build-C-Simple-app.git'
             }
         }
+        stage('Configure') {
+            steps {
+                script {
+                    // Create build directory and run CMake configure command
+                    sh 'mkdir -p ${BUILD_DIR}'
+                    sh 'cd ${BUILD_DIR} && cmake ..'
+                }
+            }
+        }
         
         stage('Build') {
             steps {
-                cmake arguments: '-DCMAKE_TOOLCHAIN_FILE=~/Projects/vcpkg/scripts/buildsystems/vcpkg.cmake', installation: 'InSearchPath'
-                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]'
+                script {
+                    // Run make command to build the project
+                    sh 'cd ${BUILD_DIR} && make'
+                }
 
             }
         }
