@@ -15,12 +15,9 @@ pipeline {
         
         stage('Build') {
             steps {
-                script {
-                    
-                    sh 'mkdir -p ${BUILD_DIR}'
-                    sh 'cd ${BUILD_DIR} && cmake ..'
-                    sh 'cd ${BUILD_DIR} && make'
-                }
+                cmake arguments: '-DCMAKE_TOOLCHAIN_FILE=~/Projects/vcpkg/scripts/buildsystems/vcpkg.cmake', installation: 'InSearchPath'
+                cmakeBuild buildType: 'Release', cleanBuild: true, installation: 'InSearchPath', steps: [[withCmake: true]]'
+
             }
         }
         
